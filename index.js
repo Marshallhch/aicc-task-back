@@ -17,7 +17,7 @@ app.post('/chat', (req, res) => {
     // console.log(sendedQuestion);
 
     // Spawn the Python process with the correct argument
-    const result = spawn('python', [
+    const result = spawn('python3', [
       './bizchat/chat/chat_main.py',
       sendedQuestion,
     ]);

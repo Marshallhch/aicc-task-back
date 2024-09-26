@@ -1,5 +1,6 @@
 const express = require('express'); // express 모듈 불러오기
 const cors = require('cors'); // cors 모듈 불러오기
+const path = require('path'); // path 모듈을 불러옵니다.
 const PORT = '8080';
 const bodyParser = require('body-parser');
 

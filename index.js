@@ -1,8 +1,55 @@
 const express = require('express'); // express 모듈 불러오기
 const cors = require('cors'); // cors 모듈 불러오기
 const PORT = '8080';
+const bodyParser = require('body-parser');
+
+const spawn = require('child_process').spawn;
 
 const app = express(); // express 모듈을 사용하기 위해 app 변수에 할당한다.
+
+app.use(bodyParser.json()); // Parse application/json content-type
+
+app.post('/chat', (req, res) => {
+  try {
+    // console.log(req.body);
+    // Extract the question from the request body (assuming it's sent as JSON)
+    const sendedQuestion = req.body.question;
+    // console.log(sendedQuestion);
+
+    // Spawn the Python process with the correct argument
+    const result = spawn('python', [
+      './bizchat/chat/chat_main.py',
+      sendedQuestion,
+    ]);
+
+    // result.stdout.on('data', (data) => {
+    //   console.log(data.toString());
+    //   // return res.status(200).json(data.toString());
+    // });
+
+    let responseData = '';
+
+    // Listen for data from the Python script
+    result.stdout.on('data', (data) => {
+      // console.log(data.toString());
+      // res.status(200).json({ answer: data.toString() });
+      responseData += data.toString();
+    });
+
+    // Listen for errors from the Python script
+    result.stderr.on('data', (data) => {
+      console.error(`stderr: ${data}`);
+    });
+
+    // Handle the close event of the child process
+    result.on('close', (code) => {
+      console.log(`Child process exited with code ${code}`);
+      res.status(200).json({ answer: responseData });
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
 
 // const corsOptions = {
 //   origin: 'http://localhost:3000', // 허용할 주소

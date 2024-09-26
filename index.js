@@ -21,7 +21,7 @@ app.post('/chat', (req, res) => {
     const scriptPath = path.join(__dirname, 'bizchat', 'chat', 'chat_main.py');
 
     // Lib 디렉토리 경로 설정
-    const libPath = path.join(__dirname, 'bizchat', 'Lib');
+    const libPath = path.join(__dirname, 'bizchat', 'chat', 'Lib');
 
     // Spawn the Python process with the correct argument
     const result = spawn('python3', [scriptPath, sendedQuestion], {

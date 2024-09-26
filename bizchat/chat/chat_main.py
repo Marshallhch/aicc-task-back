@@ -121,39 +121,4 @@ sendedQuestion = sys.argv[1]
 
 answer = rag_chain.stream(sendedQuestion)
 stream_response(answer)
-# print(sendedQuestion)
 
-# Read the first command-line argument, which is expected to be a JSON string
-# try:
-#     # Parse the incoming JSON string argument
-#     input_data = json.loads(sys.argv[1])
-#     print(input_data)
-
-#     # Extract the 'question' field from the parsed JSON
-#     sendedQuestion = input_data.get('question', None)
-#     # sendedQuestion = "신혼부부를 위한 정책을 알려주세요."
-#     print(sendedQuestion)
-
-#     # Check if 'question' is found in the input data
-#     if not sendedQuestion:
-#         print("Error: 'question' field is missing or empty in the input data.")
-#         sys.exit(1)  # Exit if the question is not found
-
-#     # Process the question with rag_chain
-#     answer = rag_chain.stream(sendedQuestion)
-
-#     # Stream the response
-#     stream_response(answer)
-
-#     # Print the answer (Node.js will capture this output)
-#     print(answer)
-
-#     # print answer to json
-#     # print(json.dumps({"answer": answer}))
-
-# except json.JSONDecodeError:
-#     print("Error: Failed to parse JSON input.")
-#     sys.exit(1)  # Exit if JSON is invalid
-# except Exception as e:
-#     print(f"Error: {e}")
-#     sys.exit(1)  # Exit on other errors

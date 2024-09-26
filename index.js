@@ -16,11 +16,11 @@ app.post('/chat', (req, res) => {
     const sendedQuestion = req.body.question;
     // console.log(sendedQuestion);
 
+    // EC2 서버에서 현재 실행 중인 Node.js 파일의 절대 경로를 기준으로 설정합니다.
+    const scriptPath = path.join(__dirname, 'bizchat', 'chat', 'chat_main.py');
+
     // Spawn the Python process with the correct argument
-    const result = spawn('python3', [
-      './bizchat/chat/chat_main.py',
-      sendedQuestion,
-    ]);
+    const result = spawn('python3', [scriptPath, sendedQuestion]);
 
     // result.stdout.on('data', (data) => {
     //   console.log(data.toString());
@@ -39,12 +39,18 @@ app.post('/chat', (req, res) => {
     // Listen for errors from the Python script
     result.stderr.on('data', (data) => {
       console.error(`stderr: ${data}`);
+      res.status(500).json({ error: data.toString() });
     });
 
     // Handle the close event of the child process
     result.on('close', (code) => {
-      console.log(`Child process exited with code ${code}`);
-      res.status(200).json({ answer: responseData });
+      if (code === 0) {
+        res.status(200).json({ answer: responseData });
+      } else {
+        res
+          .status(500)
+          .json({ error: `Child process exited with code ${code}` });
+      }
     });
   } catch (error) {
     return res.status(500).json({ error: error.message });

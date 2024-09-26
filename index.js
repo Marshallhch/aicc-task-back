@@ -20,8 +20,16 @@ app.post('/chat', (req, res) => {
     // EC2 서버에서 현재 실행 중인 Node.js 파일의 절대 경로를 기준으로 설정합니다.
     const scriptPath = path.join(__dirname, 'bizchat', 'chat', 'chat_main.py');
 
+    // Lib 디렉토리 경로 설정
+    const libPath = path.join(__dirname, 'bizchat', 'Lib');
+
     // Spawn the Python process with the correct argument
-    const result = spawn('python3', [scriptPath, sendedQuestion]);
+    const result = spawn('python3', [scriptPath, sendedQuestion], {
+      env: {
+        ...process.env,
+        PYTHONPATH: libPath, // Lib 디렉토리를 Python 경로에 추가
+      },
+    });
 
     // result.stdout.on('data', (data) => {
     //   console.log(data.toString());

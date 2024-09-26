@@ -1,7 +1,7 @@
 import os
 import sys
 import io
-from langchain import hub
+# from langchain import hub
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 from langchain_core.output_parsers import StrOutputParser

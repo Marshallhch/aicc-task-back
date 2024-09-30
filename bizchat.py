@@ -17,9 +17,6 @@ from dotenv import load_dotenv
 load_dotenv()
 os.getenv("OPENAI_API_KEY")
 
-# 경로 추적을 위한 설정
-os.environ["PWD"] = os.getcwd()
-
 #출력의 인코딩을 utf-8로 설정한다
 sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding='utf-8')
 sys.stderr = io.TextIOWrapper(sys.stderr.detach(), encoding='utf-8')
@@ -124,8 +121,8 @@ rag_chain = (
 
 from langchain_teddynote.messages import stream_response
 
-recieved_question = sys.argv[1]
-# print("질문: ", recieved_question)
+recieved_question = sys.argv[1] # 노드에서 받은 질문
+# recieved_question = "청년을 위한 정책을 알려주세요"
 
 answer = rag_chain.stream(recieved_question)
 stream_response(answer)
